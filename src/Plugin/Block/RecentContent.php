@@ -115,7 +115,7 @@ class RecentContent extends BlockBase implements ContainerFactoryPluginInterface
 
     // Q: Does the representation vary per context?
     // A: Hmm, not sure. Gimme some context examples.
-    // $cntexts_manager = \Drupal::getContainer()->get('cache_contexts_manager');
+    // $contexts_manager = \Drupal::getContainer()->get('cache_contexts_manager');
     // debug(array_keys($contexts_manager->getLabels(TRUE)));
 
     // Q: What cache thingies are already available?

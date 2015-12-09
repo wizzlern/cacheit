@@ -145,7 +145,7 @@ class AdBlock extends BlockBase implements ContainerFactoryPluginInterface {
     // \Drupal\Core\Render\PlaceholderGenerator::shouldAutomaticallyPlaceholder
 
     // Disable cache for debugging.
-     $build['#cache']['max-age'] = 0;
+    // $build['#cache']['max-age'] = 0;
 
     return $build;
   }
