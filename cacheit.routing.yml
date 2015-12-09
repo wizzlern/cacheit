@@ -1,0 +1,8 @@
+
+cacheit.shopping_cart:
+  path: '/cacheit/cart'
+  defaults:
+    _controller: '\Drupal\cacheit\Controller\ShoppingCart::dummy'
+    _title: 'Cart'
+  requirements:
+    _permission: 'access content'

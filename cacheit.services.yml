@@ -1,0 +1,4 @@
+services:
+  cacheit.lazy_builders:
+    class: Drupal\cacheit\CacheItLazyBuilders
+    arguments: ['@entity_type.manager']

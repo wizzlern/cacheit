@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @file
+ * Contains cacheit.module.
+ */
+use Drupal\Core\Cache\Cache;
+
+/**
+ * Implements hook_entity_insert().
+ */
+function cacheit_entity_insert(Drupal\Core\Entity\EntityInterface $entity) {
+  // Invalidated the recent content block cache.
+  Cache::invalidateTags(array('cacheit_recent_content'));
+}
