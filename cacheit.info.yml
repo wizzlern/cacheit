@@ -2,4 +2,5 @@ name: Cache It
 type: module
 description: Cache demo for November 2015 Drupal TechTalk
 core: 8.x
+version: 8.x-1.0
 package: Wizzlern
