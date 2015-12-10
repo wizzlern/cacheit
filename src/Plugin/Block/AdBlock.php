@@ -85,16 +85,11 @@ class AdBlock extends BlockBase implements ContainerFactoryPluginInterface {
       ->execute();
 
     // Build the ad teaser.
-    /** @var \Drupal\node\Entity\Node[] $nodes */
+    /** @var \Drupal\node\Entity\Node $node */
     $node = $this->entityTypeManager->getStorage('node')->load(reset($nids));
     $teaser = $this->entityTypeManager->getViewBuilder('node')->view($node, 'teaser');
     $build['ad'] = $teaser;
 
-    // Q: A render array of a teaser. Does it contain cache data?
-    // A: Yes. Look at the '#cache' element.
-    // debug($build['ad']['#cache']);
-
-    // Let's add the call to action link.
     $build['cart_link'] = array(
       '#type' => 'link',
       '#url' => Url::fromRoute('cacheit.shopping_cart', array(), ['query' => ['product_id' => $node->id()]]),
@@ -102,50 +97,23 @@ class AdBlock extends BlockBase implements ContainerFactoryPluginInterface {
       '#attributes' => ['class' => ['button']],
       '#weight' => 10,
     );
-    // Q: What #cache data do we need to add?
-    // A: Nothing to add for the URL. The route and URL are hard coded, no configurable parts.  (??)
-    // A: The link text is translatable, In case of multiple languages the
-    //    context languages:language_interface is required. By default the
-    //    languages:language_interface is one of the required_cache_contexts and
-    //    therefore it will be added at block level.
-    //    See: core.services.yml and Renderer::doRender
-    // $build['cart_link']['#cache'] = ['context' => ['languages:language_interface']];
 
-    // Q: Now we add a conditions link. Does this require cache settings?
-    // Q: What makes it vary? By what or when does it outdate?
     $build['conditions_link'] = array(
       '#type' => 'link',
       '#url' => Url::fromUri('entity:node/2'),
       '#title' => t('Conditions'),
       '#weight' => 11,
-      '#cache' => ['tags' => ['node:2']],
+      '#cache' => [
+        'tags' => ['node:2'],
+        'max-age' => 3600,
+      ],
     );
-    // A: The URL will change if the node url alias changes. Add a tag.
 
-    // Q: We want to remove the ad when it has expired.
-    // A: Lets's use the simple solution and expire after 1 hour.
-    $build['#cache']['max-age'] = 3600;
-
-    // Q: What would be the more complex (and more precise) solution?
-    // A: Cron job that expires this ad block when the node became invalid.
-    //    Plus a unique cache key and tag for the block.
-
-    // Q: But let's take this one step further. We want to display the remaining
-    //    time this ad is valid (hours:minutes:seconds). This is highly dynamic
-    //    data.
-    // A: No problem, we can do that.
-    // Q: What options do we have?
-    // A: 1. Not to cache; 2. Cache for 1 hour and use JS countdown timer;
-    //    3. Use a placeholder.
+    // Dynamic content added using a placeholder.
     $build['validity'] = [
       '#lazy_builder' => ['cacheit.lazy_builders:renderAdValidity', [$node->id()]],
       '#create_placeholder' => TRUE,
     ];
-    // Read about automatic placeholdering (#create_placeholder) at
-    // \Drupal\Core\Render\PlaceholderGenerator::shouldAutomaticallyPlaceholder
-
-    // Disable cache for debugging.
-    // $build['#cache']['max-age'] = 0;
 
     return $build;
   }
