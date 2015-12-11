@@ -83,8 +83,13 @@ class AdBlock extends BlockBase implements ContainerFactoryPluginInterface {
       ->sort('created', 'DESC')
       ->execute();
 
+    // Quick and dirty exit if no ad was created.
+    if (empty($nids)) {
+      return 'Create an Ad first.';
+    }
+
     // Build the ad teaser.
-    /** @var \Drupal\node\Entity\Node[] $nodes */
+    /** @var \Drupal\node\Entity\Node $node */
     $node = $this->entityTypeManager->getStorage('node')->load(reset($nids));
     $teaser = $this->entityTypeManager->getViewBuilder('node')->view($node, 'teaser');
     $build['ad'] = $teaser;
@@ -97,13 +102,14 @@ class AdBlock extends BlockBase implements ContainerFactoryPluginInterface {
     //
 
     // Let's add the call to action link.
-    $build['cart_link'] = array(
-      '#type' => 'link',
-      '#url' => Url::fromRoute('cacheit.shopping_cart', array(), ['query' => ['product_id' => $node->id()]]),
-      '#title' => t('Add to cart'),
-      '#attributes' => ['class' => ['button']],
-      '#weight' => 10,
-    );
+//    $build['cart_link'] = array(
+//      '#type' => 'link',
+//      '#url' => Url::fromRoute('cacheit.shopping_cart', array(), ['query' => ['product_id' => $node->id()]]),
+//      '#title' => t('Add to cart'),
+//      '#attributes' => ['class' => ['button']],
+//      '#weight' => 10,
+//    );
+
     // Q: What #cache data do we need to add?
 
     // A: Nothing to add for the URL. The route and URL are hard coded, no
@@ -131,7 +137,7 @@ class AdBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
     //
     // A: Lets's use the simple solution and expire after 1 hour.
-    $build['#cache']['max-age'] = 3600;
+//    $build['#cache']['max-age'] = 3600;
     //
 
     // Q: What would a the more complex (and more precise) solution look like?
@@ -149,10 +155,23 @@ class AdBlock extends BlockBase implements ContainerFactoryPluginInterface {
     // Q: What options do we have?
     // A: 1. Not to cache; 2. Cache for 1 hour and use JS countdown timer;
     //    3. Use a placeholder.
-    $build['validity'] = [
-      '#lazy_builder' => ['cacheit.lazy_builders:renderAdValidity', [$node->id()]],
-      '#create_placeholder' => TRUE,
-    ];
+
+//    $build['conditions_link'] = array(
+//      '#type' => 'link',
+//      '#url' => Url::fromUri('entity:node/2'),
+//      '#title' => t('Conditions'),
+//      '#weight' => 11,
+//      '#cache' => [
+//        'tags' => ['node:2'],
+//        'max-age' => 3600,
+//      ],
+//    );
+
+    // Dynamic content added using a placeholder.
+//    $build['validity'] = [
+//      '#lazy_builder' => ['cacheit.lazy_builders:renderAdValidity', [$node->id()]],
+//      '#create_placeholder' => TRUE,
+//    ];
     // Read about automatic placeholdering (#create_placeholder) at
     // \Drupal\Core\Render\PlaceholderGenerator::shouldAutomaticallyPlaceholder
 

@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.ad.body
+    - field.field.node.ad.field_ad_expiration
+    - node.type.ad
+  module:
+    - text
+    - user
+id: node.ad.teaser
+targetEntityType: node
+bundle: ad
+mode: teaser
+content:
+  body:
+    type: text_trimmed
+    weight: 0
+    label: hidden
+    settings:
+      trim_length: 100
+    third_party_settings: {  }
+hidden:
+  field_ad_expiration: true
+  links: true

@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - cacheit
+  theme:
+    - bartik
+id: recentcontent
+theme: bartik
+region: sidebar_second
+weight: -20
+provider: null
+plugin: cacheit_recent_content
+settings:
+  id: cacheit_recent_content
+  label: 'Recent content'
+  provider: cacheit
+  label_display: visible
+visibility: {  }

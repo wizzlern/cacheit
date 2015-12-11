@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - cacheit
+  theme:
+    - bartik
+id: advertisement
+theme: bartik
+region: sidebar_first
+weight: -20
+provider: null
+plugin: cacheit_ad_block
+settings:
+  id: cacheit_ad_block
+  label: Advertisement
+  provider: cacheit
+  label_display: '0'
+visibility: {  }

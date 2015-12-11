@@ -86,6 +86,7 @@ class RecentContent extends BlockBase implements ContainerFactoryPluginInterface
   public function build() {
     $limit = 5;
     $items = array();
+    $build = array();
 
     $nids = $this->entityQuery->get('node')
       ->range(0, $limit)
@@ -93,16 +94,27 @@ class RecentContent extends BlockBase implements ContainerFactoryPluginInterface
       ->sort('created', 'DESC')
       ->execute();
 
+    // Quick and dirty exit if no content was created.
+    if (empty($nids)) {
+      return 'Bummer, you have no content yet.';
+    }
+
+    // Build node links and collect the cache metadata.
     /** @var \Drupal\node\Entity\Node[] $nodes */
     $nodes = $this->entityTypeManager->getStorage('node')->loadMultiple($nids);
     foreach ($nodes as $node) {
       $items[] = $node->link();
+      $this->renderer->addCacheableDependency($build, $node);
     }
 
+    // Adding a Cache tag allows cache invalidation when content is added.
+    // @see cacheit_entity_insert()
     $build['recent_content'] = array(
       '#theme' => 'item_list',
       '#items' => $items,
+      '#cache' => ['tags' => ['cacheit_recent_content']],
     );
+
     // Q: Are we rendering content here?
 
     //
