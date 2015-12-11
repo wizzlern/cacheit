@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.ad.body
+    - field.field.node.ad.field_ad_expiration
+    - node.type.ad
+  module:
+    - datetime
+    - text
+    - user
+id: node.ad.default
+targetEntityType: node
+bundle: ad
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+  field_ad_expiration:
+    weight: 102
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+  links:
+    weight: 100
+hidden: {  }
