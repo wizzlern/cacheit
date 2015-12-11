@@ -50,7 +50,6 @@ class CacheItLazyBuilders {
       '#prefix' => '<p>',
       '#markup' => t('Remaining time @time', ['@time' => $time]),
       '#suffix' => '</p>',
-      '#cache' => FALSE,
     );
     // Q: What if I decide to add a JavaScript countdown timer?
     // A: Than we add the code to the render array.
