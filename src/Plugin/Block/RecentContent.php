@@ -94,6 +94,11 @@ class RecentContent extends BlockBase implements ContainerFactoryPluginInterface
       ->sort('created', 'DESC')
       ->execute();
 
+    // Quick and dirty exit if no content was created.
+    if (empty($nids)) {
+      return 'Bummer, you have no content yet.';
+    }
+
     // Build node links and collect the cache metadata.
     /** @var \Drupal\node\Entity\Node[] $nodes */
     $nodes = $this->entityTypeManager->getStorage('node')->loadMultiple($nids);

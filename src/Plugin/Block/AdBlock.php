@@ -84,6 +84,11 @@ class AdBlock extends BlockBase implements ContainerFactoryPluginInterface {
       ->sort('created', 'DESC')
       ->execute();
 
+    // Quick and dirty exit if no ad was created.
+    if (empty($nids)) {
+      return 'Create an Ad first.';
+    }
+
     // Build the ad teaser.
     /** @var \Drupal\node\Entity\Node $node */
     $node = $this->entityTypeManager->getStorage('node')->load(reset($nids));
